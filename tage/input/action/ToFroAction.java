@@ -1,6 +1,6 @@
 package tage.input.action;
 //
-import gameArcPlayground.myGame;
+import a3.myGame;
 import net.java.games.input.Event;
     /*============================================================================*/
 	public class ToFroAction extends AbstractInputAction
@@ -8,7 +8,7 @@ import net.java.games.input.Event;
 		private myGame game;
 		private int direction = 1, mapSize, outOfBoundCorrector = 1;
 		private float movementSpeed = .04f;
-		private float lastTime, currentTime;
+		private double lastTime, currentTime;
 		public ToFroAction(myGame g)
 		{ game = g;
 		}
@@ -21,10 +21,10 @@ import net.java.games.input.Event;
 		@Override
 		public void performAction(float time, Event e)
 		{
-			float elapsedTime = time-lastTime;
+			double elapsedTime = time-lastTime;
 			float keyValue = e.getValue();
-			currentTime = game.getElapsTime();
-			System.out.println(elapsedTime);
+			// currentTime = game.getElapsTime();
+			// System.out.println(elapsedTime);
 			checkBounds();
 			if (keyValue > -.2 && keyValue < .2) return;
 			float movement = movementSpeed * direction * keyValue;

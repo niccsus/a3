@@ -1,5 +1,5 @@
 package a3;
-import a2.myGame;
+import a3.myGame;
 import net.java.games.input.Event;
 import tage.input.*;
 import tage.input.action.*;

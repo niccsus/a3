@@ -1,6 +1,6 @@
 package tage.input.action;
 
-import gameArcPlayground.myGame;
+import a3.myGame;
 import net.java.games.input.Event;
 /*============================================================================*/
 public class ChangeViewport extends AbstractInputAction

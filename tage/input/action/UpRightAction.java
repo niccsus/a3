@@ -1,6 +1,6 @@
 package tage.input.action;
 
-import gameArcPlayground.myGame;
+import a3.myGame;
 import net.java.games.input.Event;
 import org.joml.*;
 /*============================================================================*/
@@ -11,14 +11,7 @@ public class UpRightAction extends AbstractInputAction
     }
     @Override
     public void performAction(float time, Event e)
-    {   
-        Matrix4f oldRot =game.getAvatar().getLocalRotation();
-        Matrix4f newRot = new Matrix4f().mul(oldRot).mul(0,1,1,1);
-        
-
-        // game.getAvatar().setLocalRotation((new Matrix4f()).
-        //         rotation(0, 1, 1, 1));
-        game.getAvatar().setLocalRotation(newRot.mul(oldRot));
-
+    {   game.getAvatar().setLocalRotation((new Matrix4f()).
+                rotation(0, 1, 1, 1));
     }
 }
