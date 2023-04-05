@@ -29,7 +29,7 @@ public class myGame extends VariableFrameRateGame
 	private int counter=0, prizesCollected =0;
 	private double lastFrameTime, currFrameTime, elapsTime;
 	private float movementSpeed = .04f;
-	private GameObject x, y, z, avatar, plane, prizeCaseO, curPrize;
+	private GameObject x, y, z, avatar, plane, prizeCaseO, curPrize, terrain;
 	private ObjShape dolS, linxS, linyS, linzS, box, planeS, prizeCaseS;
 	private TextureImage prizeTex, dolTex, waterTex, brickTex, docTex;
 	private Light light1;
@@ -57,7 +57,9 @@ public class myGame extends VariableFrameRateGame
 		dolS = new ImportedModel("dolphinHighPoly.obj");
 		box = new Cube();
 		planeS = new Plane();
-		prizeCaseS = new Cube();}
+		prizeCaseS = new Cube();
+		terrain = new TerrainPlane(1000);
+	}
 	/*============================================================================*/
 	@Override
 	public void loadTextures()
@@ -65,7 +67,9 @@ public class myGame extends VariableFrameRateGame
 		dolTex = new TextureImage("Dolphin_HighPolyUV.png");
 		waterTex = new TextureImage("waterTexture.jpg");
 		brickTex = new TextureImage("brick1.jpg");
-		docTex = new TextureImage("wood.jpg");}
+		docTex = new TextureImage("wood.jpg");
+		hills = new TextureImage("heightMap.jpg");
+	}
 	/*============================================================================*/
 	@Override
 	public void buildObjects()
@@ -99,6 +103,8 @@ public class myGame extends VariableFrameRateGame
 		prizeCaseO.setLocalTranslation(initialTranslation);
 		//---------------------PRIZES-------------------------------------------
 		setPrizes(AMOUTOFPRIZES);}
+
+		terrain.setHeightMap(hills);
 	/*============================================================================*/
 	private int fluffyClouds, lakeIslands;
 	public void loadSkyBoxes()
@@ -161,11 +167,15 @@ public class myGame extends VariableFrameRateGame
 		startBobbing();
 		//update objects and camera
 		avatar.setLocalRotation(avatar.getLocalRotation());
+		float height = terr.getHeight(loc.x(), loc.z());
+		avatar.setLocalLocation(new Vector3f(loc.x(), height, loc.z()));
 		orbitController.updateCameraPosition();
 		setHUDS();
 		repositionOverheadView();
 		checkIfPickOrPutPrize();
-		engine.getInputManager().update(System.currentTimeMillis());}
+		engine.getInputManager().update(System.currentTimeMillis());
+
+	}
 	/*============================================================================*/
 	private void startBobbing() {
 		if(elapsTime>0 && !bobEffectStarted){
