@@ -30,8 +30,8 @@ public class myGame extends VariableFrameRateGame
 	private double lastFrameTime, currFrameTime, elapsTime;
 	private float movementSpeed = .04f;
 	private GameObject x, y, z, avatar, plane, prizeCaseO, curPrize, terrain;
-	private ObjShape dolS, linxS, linyS, linzS, box, planeS, prizeCaseS;
-	private TextureImage prizeTex, dolTex, waterTex, brickTex, docTex;
+	private ObjShape dolS, linxS, linyS, linzS, box, planeS, prizeCaseS, terrainS;
+	private TextureImage prizeTex, dolTex, waterTex, brickTex, docTex, hills;
 	private Light light1;
 	private Camera cam, cam2;
 	private CopyOnWriteArrayList<GameObject> prizeBoxes;
@@ -58,7 +58,7 @@ public class myGame extends VariableFrameRateGame
 		box = new Cube();
 		planeS = new Plane();
 		prizeCaseS = new Cube();
-		terrain = new TerrainPlane(1000);
+		terrainS = new TerrainPlane(1000);
 	}
 	/*============================================================================*/
 	@Override
@@ -90,9 +90,10 @@ public class myGame extends VariableFrameRateGame
 		(y.getRenderStates()).setColor(new Vector3f(0f,1f,0f));
 		(z.getRenderStates()).setColor(new Vector3f(0f,0f,1f));
 		//--------------------PLANE--------------------------------------------
-		plane = new GameObject(GameObject.root(), planeS, waterTex);
+		plane = new GameObject(GameObject.root(), terrainS, waterTex);
 		initialScale = (new Matrix4f()).scaling(10f);
 		plane.setLocalScale(initialScale);
+		plane.setHeightMap(hills);
 		//----------------------DOCK-------------------------------------------
 		prizeCaseO = new GameObject(GameObject.root(), prizeCaseS, docTex);
 		curScale = prizeCaseO.getLocalScale();
@@ -102,9 +103,19 @@ public class myGame extends VariableFrameRateGame
 		initialTranslation = (new Matrix4f()).translation(0,0,0);
 		prizeCaseO.setLocalTranslation(initialTranslation);
 		//---------------------PRIZES-------------------------------------------
-		setPrizes(AMOUTOFPRIZES);}
+		setPrizes(AMOUTOFPRIZES);
 
-		terrain.setHeightMap(hills);
+		// terrain = new GameObject(GameObject.root(), terrainS, hills);
+		// initialTranslation = (new Matrix4f()).translation(0f,1f,0f);
+		// terrain.setLocalTranslation(initialTranslation);
+		// initialScale = (new Matrix4f()).scaling(20.0f, 1.0f, 20.0f);
+		// terrain.setLocalScale(initialScale);
+		// terrain.setHeightMap(hills);
+
+		
+		}
+		
+
 	/*============================================================================*/
 	private int fluffyClouds, lakeIslands;
 	public void loadSkyBoxes()
@@ -165,9 +176,12 @@ public class myGame extends VariableFrameRateGame
 		currFrameTime = System.currentTimeMillis();
 		elapsTime += (currFrameTime - lastFrameTime) / 1000.0;
 		startBobbing();
-		//update objects and camera
+		
+		//height map
+		Vector3f loc = avatar.getWorldLocation();
 		avatar.setLocalRotation(avatar.getLocalRotation());
-		float height = terr.getHeight(loc.x(), loc.z());
+		float height = plane.getHeight(loc.x(), loc.z());
+		//update objects and camera
 		avatar.setLocalLocation(new Vector3f(loc.x(), height, loc.z()));
 		orbitController.updateCameraPosition();
 		setHUDS();
